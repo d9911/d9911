@@ -6,9 +6,6 @@
       <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="30" height="29" alt="👋" />
     </h1>
   </a>
-
-  <!-- https://github-readme-stats.vercel.app/api?username=d9911&show_icons=true&theme=chartreuse-dark&hide=dark -->
-
   <br />
   <!-- Можно связаться : [Instagram](https://www.instagram.com/denis.991/)[VK](https://vk.com/denis991)      -->
 </div>
@@ -283,19 +280,19 @@
 
 <hr />
 
-<div class="graphics" align="center">
-
-[![Top
-  Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=d9911&layout=compact&langs_count=10&theme=chartreuse-dark)](https://github.com/anuraghazra/github-readme-stats)
-
-[![d9911 GitHub stats](https://github-readme-stats.vercel.app/api?username=d9911&show_icons=true&theme=chartreuse-dark&hide=dark)](https://github.com/anuraghazra/github-readme-stats)
-
-![d9911 GitHub streak](https://streak-stats.demolab.com/?user=d9911&theme=chartreuse-dark)
-
-  <!--
-  ![denis991's GitHub activity
-  graph](https://activity-graph.herokuapp.com/graph?username=denis991&hide_border=true&theme=chartreuse-dark)-->
-</div>
+<p align="center">
+  <a href="https://github.com/stats-organization/github-stats-extended">
+    <img src="https://github-stats-extended.vercel.app/api/top-langs/?username=d9911&amp;layout=compact&amp;langs_count=10&amp;theme=chartreuse-dark" alt="Most used languages for d9911" />
+  </a>
+  <br />
+  <a href="https://github.com/stats-organization/github-stats-extended">
+    <img src="https://github-stats-extended.vercel.app/api?username=d9911&amp;show_icons=true&amp;theme=chartreuse-dark" alt="GitHub statistics for d9911" />
+  </a>
+  <br />
+  <a href="https://github.com/DenverCoder1/github-readme-streak-stats">
+    <img src="https://streak-stats.demolab.com/?user=d9911&amp;theme=chartreuse-dark" alt="GitHub contribution streak for d9911" />
+  </a>
+</p>
 
 <div class="statistic" align="center">
   <img src="https://komarev.com/ghpvc/?username=denis991&style=flat-square&color=blue" width="110" height="20" alt="GitHub profile views" />
