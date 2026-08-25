@@ -7,24 +7,30 @@ document.addEventListener('DOMContentLoaded', () => {
 	// --- Theme ---
 	// Handles theme initialization and switching. Loads theme from localStorage ("dark" or "light") on page load.
 	// Updates body class and toggle button icon. Saves user choice to localStorage on toggle.
-	const savedTheme = localStorage.getItem('theme');
-	if (savedTheme === 'dark') {
-		document.body.classList.add('dark-theme');
-		document.body.classList.remove('light-theme');
-		if (themeToggle) themeToggle.textContent = '🌙';
-	} else {
-		document.body.classList.remove('dark-theme');
-		document.body.classList.add('light-theme');
-		if (themeToggle) themeToggle.textContent = '☀️';
-	}
+	const applyTheme = (theme) => {
+		const isDark = theme === 'dark';
+		document.documentElement.dataset.theme = theme;
+		document.body.classList.toggle('dark-theme', isDark);
+		document.body.classList.toggle('light-theme', !isDark);
+
+		const themeColor = document.querySelector('meta[name="theme-color"]');
+		if (themeColor) themeColor.content = isDark ? '#121212' : '#fbfbfb';
+
+		if (themeToggle) {
+			themeToggle.innerHTML = isDark
+				? '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V2m0 20v-2M4 12H2m20 0h-2M5.64 5.64 4.22 4.22m15.56 15.56-1.42-1.42m0-12.72 1.42-1.42M4.22 19.78l1.42-1.42M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+				: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 15.1A9 9 0 0 1 8.9 3.3 9 9 0 1 0 20.7 15.1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+			themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+		}
+	};
+
+	const savedTheme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+	applyTheme(savedTheme);
 	if (themeToggle) {
 		themeToggle.addEventListener('click', () => {
-			// Toggle theme classes and icon, save to localStorage
-			document.body.classList.toggle('dark-theme');
-			document.body.classList.toggle('light-theme');
-			const isDark = document.body.classList.contains('dark-theme');
-			themeToggle.textContent = isDark ? '🌙' : '☀️';
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+			const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+			applyTheme(nextTheme);
+			localStorage.setItem('theme', nextTheme);
 		});
 	}
 
@@ -35,34 +41,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	// 3. Browser language (with region mapping for RU/CIS and ES-speaking countries)
 	const languageMap = {
 		ru: {
-			description: 'Личный сайт-разработчика d9911: проекты, контакты, технологии и CV.',
+			description: 'Портфолио Дениса Гуцуляка: JavaScript, TypeScript, frontend-инструменты и независимые веб-приложения.',
 			keywords: 'd9911, разработчик, проекты, портфолио, технологии, frontend, backend, cv, контакты, open source',
 			htmlLang: 'ru',
 			translations: {
 				'hi': "Привет, я Денис и я FullStack JavaScript Developer",
-				'page-title': 'Страница Дениса',
+				'page-title': 'Денис Гуцуляк — FullStack JavaScript Developer',
 				"process": 'В процессе',
 				"free-time-h3": 'Я провожу своё свободное время',
 			}
 		},
 		es: {
-			description: 'Sitio web personal del desarrollador d9911: proyectos, contacto, tecnologías y currículum.',
+			description: 'Portafolio de Denis Gutsuliak: JavaScript, TypeScript, herramientas frontend y aplicaciones web independientes.',
 			keywords: 'd9911, desarrollador, proyectos, portafolio, tecnologías, frontend, backend, currículum, contacto, open source',
 			htmlLang: 'es',
 			translations: {
 				'hi': "Hola, soy Denis y soy FullStack JavaScript Developer",
-				'page-title': 'Página de Denis',
+				'page-title': 'Denis Gutsuliak — FullStack JavaScript Developer',
 				"process": 'En el proceso',
 				"free-time-h3": 'Paso mi tiempo libre,',
 			}
 		},
 		en: {
-			description: 'Personal website of developer d9911: projects, contact info, technologies, and CV.',
+			description: 'Portfolio of Denis Gutsuliak: JavaScript, TypeScript, frontend tools, and independent web applications.',
 			keywords: 'd9911, developer, projects, portfolio, technologies, frontend, backend, cv, contacts, open source',
 			htmlLang: 'en',
 			translations: {
 				'hi': "Hi, I'm Denis and I'm a FullStack JavaScript Developer",
-				'page-title': "Denis Page",
+				'page-title': 'Denis Gutsuliak — FullStack JavaScript Developer',
 				"process": 'In the process',
 				"free-time-h3": 'I spend my free time on',
 			}
@@ -137,21 +143,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const translationsMeta = {
 		ru: {
-			description: 'Личный сайт-разработчика d9911: проекты, контакты, технологии и CV.',
-			'og:description': 'Личный сайт-разработчика d9911: проекты, контакты, технологии и CV.',
-			'twitter:description': 'Личный сайт-разработчика d9911: проекты, контакты, технологии и CV.',
+			description: 'Портфолио Дениса Гуцуляка: JavaScript, TypeScript, frontend-инструменты и независимые веб-приложения.',
+			'og:description': 'Портфолио Дениса Гуцуляка: JavaScript, TypeScript, frontend-инструменты и независимые веб-приложения.',
+			'twitter:description': 'Портфолио Дениса Гуцуляка: JavaScript, TypeScript, frontend-инструменты и независимые веб-приложения.',
 			keywords: 'd9911, разработчик, проекты, портфолио, технологии, frontend, backend, cv, контакты, open source',
 		},
 		en: {
-			description: "Personal website of developer d9911: projects, contact info, technologies, and CV.",
-			'og:description': "Personal website of developer d9911: projects, contact info, technologies, and CV.",
-			'twitter:description': "Personal website of developer d9911: projects, contact info, technologies, and CV.",
+			description: 'Portfolio of Denis Gutsuliak: JavaScript, TypeScript, frontend tools, and independent web applications.',
+			'og:description': 'Portfolio of Denis Gutsuliak: JavaScript, TypeScript, frontend tools, and independent web applications.',
+			'twitter:description': 'Portfolio of Denis Gutsuliak: JavaScript, TypeScript, frontend tools, and independent web applications.',
 			keywords: 'd9911, developer, projects, portfolio, technologies, frontend, backend, cv, contacts, open source',
 		},
 		es: {
-			description: "Sitio web personal del desarrollador d9911: proyectos, contacto, tecnologías y currículum.",
-			'og:description': "Sitio web personal del desarrollador d9911: proyectos, contacto, tecnologías y currículum.",
-			'twitter:description': "Sitio web personal del desarrollador d9911: proyectos, contacto, tecnologías y currículum.",
+			description: 'Portafolio de Denis Gutsuliak: JavaScript, TypeScript, herramientas frontend y aplicaciones web independientes.',
+			'og:description': 'Portafolio de Denis Gutsuliak: JavaScript, TypeScript, herramientas frontend y aplicaciones web independientes.',
+			'twitter:description': 'Portafolio de Denis Gutsuliak: JavaScript, TypeScript, herramientas frontend y aplicaciones web independientes.',
 			keywords: 'd9911, desarrollador, proyectos, portafolio, tecnologías, frontend, backend, currículum, contacto, open source',
 		},
 	};
@@ -183,6 +189,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 		updateMetaTags();
 		setLangMeta(currentLanguage);
+		updateLanguageMenu();
+	};
+
+	const languageMenu = document.getElementById('language-options');
+	const languageCurrent = document.getElementById('language-current');
+	const languageOptions = [...document.querySelectorAll('[data-language]')];
+	const updateLanguageMenu = () => {
+		if (languageCurrent) languageCurrent.textContent = currentLanguage.toUpperCase();
+		languageOptions.forEach(option => option.setAttribute('aria-selected', String(option.dataset.language === currentLanguage)));
+	};
+	const closeLanguageMenu = (restoreFocus = false) => {
+		if (!languageToggle || !languageMenu) return;
+		languageMenu.hidden = true;
+		languageToggle.setAttribute('aria-expanded', 'false');
+		if (restoreFocus) languageToggle.focus();
+	};
+	const openLanguageMenu = () => {
+		if (!languageToggle || !languageMenu) return;
+		languageMenu.hidden = false;
+		languageToggle.setAttribute('aria-expanded', 'true');
+		(languageOptions.find(option => option.dataset.language === currentLanguage) || languageOptions[0])?.focus();
 	};
 
 	// --- Language switchers ---
@@ -199,15 +226,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	if (languageToggle) {
-		languageToggle.addEventListener('click', () => {
-			if (currentLanguage === 'ru') currentLanguage = 'en';
-			else if (currentLanguage === 'en') currentLanguage = 'es';
-			else currentLanguage = 'ru';
-			document.documentElement.lang = currentLanguage;
+		languageToggle.addEventListener('click', () => languageMenu?.hidden ? openLanguageMenu() : closeLanguageMenu());
+	}
+	languageOptions.forEach((option, index) => {
+		option.addEventListener('click', () => {
+			currentLanguage = option.dataset.language;
 			localStorage.setItem('language', currentLanguage);
 			translatePage();
+			closeLanguageMenu(true);
 		});
-	}
+		option.addEventListener('keydown', event => {
+			if (event.key === 'Escape') { event.preventDefault(); closeLanguageMenu(true); }
+			if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+				event.preventDefault();
+				const step = event.key === 'ArrowDown' ? 1 : -1;
+				languageOptions[(index + step + languageOptions.length) % languageOptions.length].focus();
+			}
+		});
+	});
+	document.addEventListener('pointerdown', event => {
+		if (!languageToggle?.contains(event.target) && !languageMenu?.contains(event.target)) closeLanguageMenu();
+	});
 
 	// --- Initial render ---
 	// Sets <html lang>, translates page, sets meta, and shows loader before greeting
@@ -220,18 +259,44 @@ document.addEventListener('DOMContentLoaded', () => {
 	// --- README.md loading ---
 	// Loads and renders README.md into the #readme-container using marked.js
 	const readmeContainer = document.getElementById('readme-container');
-	fetch('../README.md')
+	const renderMarkdown = (markdown) => {
+		if (window.marked?.parse) return window.marked.parse(markdown);
+
+		const fallback = document.createElement('pre');
+		fallback.className = 'markdown-fallback';
+		fallback.textContent = markdown;
+		return fallback;
+	};
+
+	fetch('./README.md')
 		.then((res) => {
 			if (!res.ok) throw new Error('Не удалось загрузить README.md');
 			return res.text();
 		})
 		.then((markdown) => {
-			const html = marked.parse(markdown);
-			readmeContainer.innerHTML = html;
+			const rendered = renderMarkdown(markdown);
+			readmeContainer.replaceChildren();
+			if (typeof rendered === 'string') readmeContainer.innerHTML = rendered;
+			else readmeContainer.append(rendered);
+			const images = [...readmeContainer.querySelectorAll('img')];
+			images.forEach((image, index) => {
+				image.decoding = 'async';
+				if (index > 1) image.loading = 'lazy';
+				if (image.src.includes('github-readme-stats.vercel.app')) {
+					image.addEventListener('error', () => {
+						const fallback = document.createElement('span');
+						fallback.className = 'external-image-fallback';
+						fallback.textContent = currentLanguage === 'ru' ? 'Статистика GitHub временно недоступна' : currentLanguage === 'es' ? 'Las estadísticas de GitHub no están disponibles' : 'GitHub stats are temporarily unavailable';
+						image.replaceWith(fallback);
+					}, { once: true });
+				}
+			});
+			readmeContainer.setAttribute('aria-busy', 'false');
 			translatePage(); // <-- translate new elements!
 		})
 		.catch((err) => {
 			console.error(err);
+			readmeContainer.setAttribute('aria-busy', 'false');
 			readmeContainer.innerHTML = '<p>Error while loading content..</p>';
 		});
 

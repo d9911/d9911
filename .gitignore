@@ -1,0 +1,10 @@
+/node_modules/
+/build/
+/dist/
+
+.DS_Store
+**/.DS_Store
+Icon?
+._*
+.vscode/
+.idea/
