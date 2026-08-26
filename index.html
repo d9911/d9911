@@ -4,9 +4,9 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 		<title data-i18n="page-title">Denis Gutsuliak — FullStack JavaScript Developer</title>
-		<link rel="stylesheet" href="./src/styles.css?v=20260824" />
+		<link rel="stylesheet" href="./src/styles.css?v=20260826" />
 		<script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-		<script defer src="./src/script.js?v=20260824"></script>
+		<script defer src="./src/script.js?v=20260826"></script>
 		<link rel="icon" type="image/png" sizes="32x32" href="src/image/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="src/image/favicon-16x16.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="src/image/apple-touch-icon.png" />
@@ -51,7 +51,7 @@
 		<meta name="format-detection" content="telephone=no, email=no, address=no" />
 		<meta
 			http-equiv="Content-Security-Policy"
-			content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; font-src 'self';"
+			content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; font-src 'self'; frame-src https://*.d9911.org;"
 		/>
 		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -96,6 +96,24 @@
 							"url": "https://d9911.org/",
 							"sameAs": ["https://github.com/d9911", "https://t.me/d9911"]
 						}
+					},
+					{
+						"@type": "ItemList",
+						"@id": "https://d9911.org/#projects",
+						"name": "Web projects by Denis Gutsuliak",
+						"numberOfItems": 10,
+						"itemListElement": [
+							{ "@type": "ListItem", "position": 1, "url": "https://chameleon.d9911.org/", "name": "KeyChameleon" },
+							{ "@type": "ListItem", "position": 2, "url": "https://calculator-adaptation.d9911.org/", "name": "Calculator Adaptation" },
+							{ "@type": "ListItem", "position": 3, "url": "https://dice.d9911.org/", "name": "Dice" },
+							{ "@type": "ListItem", "position": 4, "url": "https://icon.d9911.org/", "name": "IconForge" },
+							{ "@type": "ListItem", "position": 5, "url": "https://stars.d9911.org/", "name": "Stars" },
+							{ "@type": "ListItem", "position": 6, "url": "https://analyzer.d9911.org/", "name": "TextAnalyzer" },
+							{ "@type": "ListItem", "position": 7, "url": "https://colorflow.d9911.org/", "name": "ColorFlow" },
+							{ "@type": "ListItem", "position": 8, "url": "https://image64.d9911.org/", "name": "image64" },
+							{ "@type": "ListItem", "position": 9, "url": "https://text-analyzer-archive.d9911.org/", "name": "TextAnalyzer Archive" },
+							{ "@type": "ListItem", "position": 10, "url": "https://mark-mirror.d9911.org/", "name": "MarkMirror" }
+						]
 					}
 				]
 			}
@@ -103,33 +121,138 @@
 	</head>
 	<body class="dark-theme">
 		<a class="skip-link" href="#main-content">Перейти к основному содержимому</a>
-		<!-- Блок управления темой и языком -->
-		<nav class="controls" aria-label="Настройки отображения">
-			<button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to light theme">
-				<svg viewBox="0 0 24 24" width="20" height="20">
-					<path
-						fill="currentColor"
-						d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z"
-					/>
-				</svg>
-			</button>
-			<div class="language-menu">
-				<button id="language-toggle" class="language-trigger" type="button" aria-label="Switch language" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-options">
-					<span id="language-current">RU</span>
-					<svg class="language-chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5832 6.00002L7.99657 8.58669L5.4099 6.00002C5.1499 5.74002 4.7299 5.74002 4.4699 6.00002C4.2099 6.26002 4.2099 6.68002 4.4699 6.94002L7.5299 10C7.7899 10.26 8.2099 10.26 8.4699 10L11.5299 6.94002C11.7899 6.68002 11.7899 6.26002 11.5299 6.00002C11.2699 5.74669 10.8432 5.74002 10.5832 6.00002Z" fill="currentColor"/></svg>
+		<header id="site-header" class="site-header">
+			<div class="site-header__inner">
+				<button id="mobile-menu-toggle" class="mobile-menu-toggle" type="button" aria-label="Открыть навигацию" aria-haspopup="dialog" aria-controls="mobile-navigation">
+					<span></span><span></span><span></span>
 				</button>
-				<div id="language-options" class="language-options" role="listbox" hidden>
-					<button type="button" role="option" data-language="ru"><span>Русский</span><span>RU</span></button>
-					<button type="button" role="option" data-language="en"><span>English</span><span>EN</span></button>
-					<button type="button" role="option" data-language="es"><span>Español</span><span>ES</span></button>
+				<a class="site-brand" href="#main-content" aria-label="d9911 — к началу страницы">
+					<img src="src/image/favicon-32x32.png" width="32" height="32" alt="" />
+					<span>d9911</span>
+				</a>
+				<nav class="desktop-navigation" aria-label="Основные разделы">
+					<a href="#about" data-i18n="nav-about">Обо мне</a>
+					<a href="#skills" data-i18n="nav-skills">Навыки</a>
+					<a href="#learning" data-i18n="nav-learning">В процессе</a>
+					<a href="#projects" data-i18n="nav-projects">Мои проекты</a>
+					<a href="#contacts" data-i18n="nav-contacts">Контакты</a>
+				</nav>
+				<div class="controls" aria-label="Настройки отображения">
+					<button class="icon-button" type="button" data-theme-toggle aria-label="Переключить тему"></button>
+					<div class="language-menu">
+						<button id="language-toggle" class="language-trigger" type="button" aria-label="Выбрать язык" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-options">
+							<span id="language-current">RU</span>
+							<svg class="language-chevron" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5832 6.00002L7.99657 8.58669L5.4099 6.00002C5.1499 5.74002 4.7299 5.74002 4.4699 6.00002C4.2099 6.26002 4.2099 6.68002 4.4699 6.94002L7.5299 10C7.7899 10.26 8.2099 10.26 8.4699 10L11.5299 6.94002C11.7899 6.68002 11.7899 6.26002 11.5299 6.00002C11.2699 5.74669 10.8432 5.74002 10.5832 6.00002Z" fill="currentColor"/></svg>
+						</button>
+						<div id="language-options" class="language-options" role="listbox" hidden>
+							<button type="button" role="option" data-language="ru"><span>Русский</span><span>RU</span></button>
+							<button type="button" role="option" data-language="en"><span>English</span><span>EN</span></button>
+							<button type="button" role="option" data-language="es"><span>Español</span><span>ES</span></button>
+						</div>
+					</div>
 				</div>
 			</div>
-		</nav>
+		</header>
+
+		<dialog id="mobile-navigation" class="mobile-navigation" aria-labelledby="mobile-navigation-title">
+			<aside class="mobile-navigation__panel">
+				<header class="mobile-navigation__header">
+					<h2 id="mobile-navigation-title" data-i18n="menu-title">Навигация</h2>
+					<button class="mobile-navigation__close" type="button" data-close-mobile-menu aria-label="Закрыть навигацию">×</button>
+				</header>
+				<nav class="mobile-navigation__links" aria-label="Разделы страницы">
+					<a href="#about" data-i18n="nav-about">Обо мне</a>
+					<a href="#skills" data-i18n="nav-skills">Навыки</a>
+					<a href="#learning" data-i18n="nav-learning">В процессе</a>
+					<a href="#projects" data-i18n="nav-projects">Мои проекты</a>
+					<a href="#contacts" data-i18n="nav-contacts">Контакты</a>
+				</nav>
+				<footer class="mobile-navigation__footer">
+					<button class="mobile-theme-toggle" type="button" data-theme-toggle><span class="mobile-theme-toggle__icon" aria-hidden="true"></span><span data-i18n="theme-label">Сменить тему</span></button>
+					<div class="mobile-language-options" role="group" aria-label="Выбор языка">
+						<button type="button" data-language="ru">RU</button><button type="button" data-language="en">EN</button><button type="button" data-language="es">ES</button>
+					</div>
+				</footer>
+			</aside>
+			<button class="mobile-navigation__dismiss" type="button" data-close-mobile-menu aria-label="Закрыть меню"></button>
+		</dialog>
 
 		<main class="container" id="main-content" tabindex="-1" aria-label="Портфолио Дениса Гуцуляка">
-			<div id="readme-container" aria-busy="true">
-				<p class="loading-status" role="status">Загрузка профиля…</p>
-			</div>
+			<section id="about" class="profile-section" aria-label="Профиль Дениса Гуцуляка">
+				<div id="readme-container" aria-busy="true">
+					<p class="loading-status" role="status">Загрузка профиля…</p>
+				</div>
+			</section>
+
+			<section id="projects" class="projects-section" aria-labelledby="projects-title">
+				<header class="projects-section__header">
+					<p class="section-kicker" data-i18n="projects-kicker">Независимые веб-инструменты</p>
+					<h2 id="projects-title" data-i18n="projects-title">Мои проекты</h2>
+					<p data-i18n="projects-intro">Небольшие приложения, которые решают одну задачу и работают прямо в браузере.</p>
+				</header>
+				<div class="projects-grid">
+					<article class="project-card">
+						<header><h3>KeyChameleon</h3><a href="https://chameleon.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть KeyChameleon в новой вкладке">↗</a></header>
+						<p data-i18n="project-key-chameleon">Перевод текста между QWERTY и ЙЦУКЕН с виртуальной клавиатурой.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр KeyChameleon" data-src="https://chameleon.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="KeyChameleon" data-project-url="https://chameleon.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>Calculator Adaptation</h3><a href="https://calculator-adaptation.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть Calculator Adaptation в новой вкладке">↗</a></header>
+						<p data-i18n="project-calculator">Калькулятор CSS calc() для адаптивного размера шрифта с графиком и сохранением значений.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр Calculator Adaptation" data-src="https://calculator-adaptation.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="Calculator Adaptation" data-project-url="https://calculator-adaptation.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>Dice</h3><a href="https://dice.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть Dice в новой вкладке">↗</a></header>
+						<p data-i18n="project-dice">Виртуальные игральные кости с анимацией и управлением встряхиванием телефона.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр Dice" data-src="https://dice.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="Dice" data-project-url="https://dice.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>IconForge</h3><a href="https://icon.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть IconForge в новой вкладке">↗</a></header>
+						<p data-i18n="project-icon-forge">Генератор favicon и PWA-иконок разных размеров из одного изображения.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр IconForge" data-src="https://icon.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="IconForge" data-project-url="https://icon.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>Stars</h3><a href="https://stars.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть Stars в новой вкладке">↗</a></header>
+						<p data-i18n="project-stars">Доступный интерфейс выбора оценки от одной до пяти звёзд.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр Stars" data-src="https://stars.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="Stars" data-project-url="https://stars.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>TextAnalyzer</h3><a href="https://analyzer.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть TextAnalyzer в новой вкладке">↗</a></header>
+						<p data-i18n="project-text-analyzer">Анализ символов, слов, строк и предложений с визуальной статистикой.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр TextAnalyzer" data-src="https://analyzer.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="TextAnalyzer" data-project-url="https://analyzer.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>ColorFlow</h3><a href="https://colorflow.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть ColorFlow в новой вкладке">↗</a></header>
+						<p data-i18n="project-color-flow">Конвертер HEX, RGB, HSL и CMYK с интерактивной палитрой.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр ColorFlow" data-src="https://colorflow.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="ColorFlow" data-project-url="https://colorflow.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>image64</h3><a href="https://image64.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть image64 в новой вкладке">↗</a></header>
+						<p data-i18n="project-image64">Локальное преобразование изображений в Base64 и Data URL.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр image64" data-src="https://image64.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="image64" data-project-url="https://image64.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>TextAnalyzer Archive</h3><a href="https://text-analyzer-archive.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть TextAnalyzer Archive в новой вкладке">↗</a></header>
+						<p data-i18n="project-text-analyzer-archive">Лёгкая архивная версия анализатора для подсчёта слов и символов.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр TextAnalyzer Archive" data-src="https://text-analyzer-archive.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="TextAnalyzer Archive" data-project-url="https://text-analyzer-archive.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+					<article class="project-card">
+						<header><h3>MarkMirror</h3><a href="https://mark-mirror.d9911.org/" target="_blank" rel="noopener" aria-label="Открыть MarkMirror в новой вкладке">↗</a></header>
+						<p data-i18n="project-mark-mirror">Markdown-редактор с безопасным живым предпросмотром и синхронной прокруткой.</p>
+						<details class="project-preview" data-project-preview><summary data-i18n="preview-toggle">Показать предпросмотр</summary><div class="project-preview__body"><iframe title="Предпросмотр MarkMirror" data-src="https://mark-mirror.d9911.org/" loading="lazy"></iframe><button type="button" data-project-dialog data-project-name="MarkMirror" data-project-url="https://mark-mirror.d9911.org/" data-i18n="open-large">Открыть крупнее</button></div></details>
+					</article>
+				</div>
+			</section>
 		</main>
+
+		<footer id="contacts" class="site-footer">
+			<p><strong>d9911</strong> · <span data-i18n="footer-text">Независимые веб-приложения и инструменты.</span></p>
+			<nav aria-label="Контакты"><a href="https://github.com/d9911">GitHub</a><a href="https://t.me/d9911">Telegram</a><a href="mailto:d.99113@gmail.com">Email</a></nav>
+		</footer>
+
+		<dialog id="project-dialog" class="project-dialog" aria-labelledby="project-dialog-title">
+			<header><h2 id="project-dialog-title">Project</h2><button type="button" data-close-project-dialog aria-label="Закрыть предпросмотр">×</button></header>
+			<iframe title="Увеличенный предпросмотр проекта" loading="lazy"></iframe>
+		</dialog>
 	</body>
 </html>

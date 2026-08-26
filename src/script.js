@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-	const themeToggle = document.getElementById('theme-toggle');
+	const themeToggles = [...document.querySelectorAll('[data-theme-toggle]')];
 	const languageToggle = document.getElementById('language-toggle');
 	const languageSwitcher = document.getElementById('language-switcher');
 	const i18nElements = document.querySelectorAll('[data-i18n]');
@@ -16,23 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
 		const themeColor = document.querySelector('meta[name="theme-color"]');
 		if (themeColor) themeColor.content = isDark ? '#121212' : '#fbfbfb';
 
-		if (themeToggle) {
-			themeToggle.innerHTML = isDark
-				? '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V2m0 20v-2M4 12H2m20 0h-2M5.64 5.64 4.22 4.22m15.56 15.56-1.42-1.42m0-12.72 1.42-1.42M4.22 19.78l1.42-1.42M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
-				: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 15.1A9 9 0 0 1 8.9 3.3 9 9 0 1 0 20.7 15.1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
-			themeToggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
-		}
+		const icon = isDark
+			? '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4V2m0 20v-2M4 12H2m20 0h-2M5.64 5.64 4.22 4.22m15.56 15.56-1.42-1.42m0-12.72 1.42-1.42M4.22 19.78l1.42-1.42M17 12a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+			: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 15.1A9 9 0 0 1 8.9 3.3 9 9 0 1 0 20.7 15.1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+
+		themeToggles.forEach((toggle) => {
+			const iconTarget = toggle.querySelector('.mobile-theme-toggle__icon');
+			if (iconTarget) iconTarget.innerHTML = icon;
+			else toggle.innerHTML = icon;
+			toggle.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+		});
 	};
 
 	const savedTheme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
 	applyTheme(savedTheme);
-	if (themeToggle) {
+	themeToggles.forEach((themeToggle) => {
 		themeToggle.addEventListener('click', () => {
 			const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
 			applyTheme(nextTheme);
 			localStorage.setItem('theme', nextTheme);
 		});
-	}
+	});
 
 	// --- Language detection (query, localStorage, browser) ---
 	// Determines the user's language preference in the following order:
@@ -47,8 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
 			translations: {
 				'hi': "Привет, я Денис и я FullStack JavaScript Developer",
 				'page-title': 'Денис Гуцуляк — FullStack JavaScript Developer',
-				"process": 'В процессе',
-				"free-time-h3": 'Я провожу своё свободное время',
+				'process': 'В процессе',
+				'free-time-h3': 'Я провожу своё свободное время',
+				'nav-about': 'Обо мне', 'nav-skills': 'Навыки', 'nav-learning': 'В процессе', 'nav-projects': 'Мои проекты', 'nav-contacts': 'Контакты',
+				'menu-title': 'Навигация', 'theme-label': 'Сменить тему', 'projects-kicker': 'Независимые веб-инструменты', 'projects-title': 'Мои проекты',
+				'projects-intro': 'Небольшие приложения, которые решают одну задачу и работают прямо в браузере.',
+				'preview-toggle': 'Показать предпросмотр', 'open-large': 'Открыть крупнее', 'footer-text': 'Независимые веб-приложения и инструменты.',
+				'project-calculator': 'Калькулятор CSS calc() для адаптивного размера шрифта с графиком и сохранением значений.',
+				'project-color-flow': 'Конвертер HEX, RGB, HSL и CMYK с интерактивной палитрой.',
+				'project-dice': 'Виртуальные игральные кости с анимацией и управлением встряхиванием телефона.',
+				'project-icon-forge': 'Генератор favicon и PWA-иконок разных размеров из одного изображения.',
+				'project-key-chameleon': 'Перевод текста между QWERTY и ЙЦУКЕН с виртуальной клавиатурой.',
+				'project-mark-mirror': 'Markdown-редактор с безопасным живым предпросмотром и синхронной прокруткой.',
+				'project-text-analyzer': 'Анализ символов, слов, строк и предложений с визуальной статистикой.',
+				'project-text-analyzer-archive': 'Лёгкая архивная версия анализатора для подсчёта слов и символов.',
+				'project-image64': 'Локальное преобразование изображений в Base64 и Data URL.',
+				'project-stars': 'Доступный интерфейс выбора оценки от одной до пяти звёзд.',
 			}
 		},
 		es: {
@@ -58,8 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
 			translations: {
 				'hi': "Hola, soy Denis y soy FullStack JavaScript Developer",
 				'page-title': 'Denis Gutsuliak — FullStack JavaScript Developer',
-				"process": 'En el proceso',
-				"free-time-h3": 'Paso mi tiempo libre,',
+				'process': 'En proceso',
+				'free-time-h3': 'Paso mi tiempo libre en',
+				'nav-about': 'Sobre mí', 'nav-skills': 'Habilidades', 'nav-learning': 'En proceso', 'nav-projects': 'Mis proyectos', 'nav-contacts': 'Contactos',
+				'menu-title': 'Navegación', 'theme-label': 'Cambiar tema', 'projects-kicker': 'Herramientas web independientes', 'projects-title': 'Mis proyectos',
+				'projects-intro': 'Pequeñas aplicaciones que resuelven una tarea y funcionan directamente en el navegador.',
+				'preview-toggle': 'Mostrar vista previa', 'open-large': 'Abrir ampliado', 'footer-text': 'Aplicaciones y herramientas web independientes.',
+				'project-calculator': 'Calculadora CSS calc() para tipografía adaptable con gráfico y valores guardados.',
+				'project-color-flow': 'Conversor HEX, RGB, HSL y CMYK con paleta interactiva.',
+				'project-dice': 'Dados virtuales con animación y control mediante movimiento del teléfono.',
+				'project-icon-forge': 'Generador de favicon e iconos PWA en varios tamaños desde una imagen.',
+				'project-key-chameleon': 'Conversión de texto entre QWERTY y ЙЦУКЕН con teclado virtual.',
+				'project-mark-mirror': 'Editor Markdown con vista previa segura y desplazamiento sincronizado.',
+				'project-text-analyzer': 'Análisis de caracteres, palabras, líneas y frases con estadísticas visuales.',
+				'project-text-analyzer-archive': 'Versión ligera archivada para contar palabras y caracteres.',
+				'project-image64': 'Conversión local de imágenes a Base64 y Data URL.',
+				'project-stars': 'Interfaz accesible para seleccionar una valoración de una a cinco estrellas.',
 			}
 		},
 		en: {
@@ -69,8 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
 			translations: {
 				'hi': "Hi, I'm Denis and I'm a FullStack JavaScript Developer",
 				'page-title': 'Denis Gutsuliak — FullStack JavaScript Developer',
-				"process": 'In the process',
-				"free-time-h3": 'I spend my free time on',
+				'process': 'In progress',
+				'free-time-h3': 'I spend my free time on',
+				'nav-about': 'About', 'nav-skills': 'Skills', 'nav-learning': 'In progress', 'nav-projects': 'My projects', 'nav-contacts': 'Contacts',
+				'menu-title': 'Navigation', 'theme-label': 'Switch theme', 'projects-kicker': 'Independent web tools', 'projects-title': 'My projects',
+				'projects-intro': 'Small applications that solve one task and run directly in the browser.',
+				'preview-toggle': 'Show preview', 'open-large': 'Open larger', 'footer-text': 'Independent web applications and tools.',
+				'project-calculator': 'A CSS calc() calculator for responsive font sizing with a chart and saved values.',
+				'project-color-flow': 'A HEX, RGB, HSL, and CMYK converter with an interactive palette.',
+				'project-dice': 'Virtual dice with animation and phone shake controls.',
+				'project-icon-forge': 'A favicon and PWA icon generator producing multiple sizes from one image.',
+				'project-key-chameleon': 'QWERTY and ЙЦУКЕН text conversion with a virtual keyboard.',
+				'project-mark-mirror': 'A Markdown editor with secure live preview and synchronized scrolling.',
+				'project-text-analyzer': 'Character, word, line, and sentence analysis with visual statistics.',
+				'project-text-analyzer-archive': 'A lightweight archived analyzer for counting words and characters.',
+				'project-image64': 'Local image conversion to Base64 and Data URL.',
+				'project-stars': 'An accessible interface for selecting a one-to-five-star rating.',
 			}
 		}
 	};
@@ -195,9 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	const languageMenu = document.getElementById('language-options');
 	const languageCurrent = document.getElementById('language-current');
 	const languageOptions = [...document.querySelectorAll('[data-language]')];
+	const desktopLanguageOptions = languageOptions.filter((option) => option.closest('#language-options'));
 	const updateLanguageMenu = () => {
 		if (languageCurrent) languageCurrent.textContent = currentLanguage.toUpperCase();
-		languageOptions.forEach(option => option.setAttribute('aria-selected', String(option.dataset.language === currentLanguage)));
+		languageOptions.forEach((option) => {
+			const isCurrent = option.dataset.language === currentLanguage;
+			if (option.closest('.mobile-language-options')) option.setAttribute('aria-pressed', String(isCurrent));
+			else option.setAttribute('aria-selected', String(isCurrent));
+		});
 	};
 	const closeLanguageMenu = (restoreFocus = false) => {
 		if (!languageToggle || !languageMenu) return;
@@ -209,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!languageToggle || !languageMenu) return;
 		languageMenu.hidden = false;
 		languageToggle.setAttribute('aria-expanded', 'true');
-		(languageOptions.find(option => option.dataset.language === currentLanguage) || languageOptions[0])?.focus();
+		(desktopLanguageOptions.find(option => option.dataset.language === currentLanguage) || desktopLanguageOptions[0])?.focus();
 	};
 
 	// --- Language switchers ---
@@ -228,25 +279,94 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (languageToggle) {
 		languageToggle.addEventListener('click', () => languageMenu?.hidden ? openLanguageMenu() : closeLanguageMenu());
 	}
-	languageOptions.forEach((option, index) => {
+	languageOptions.forEach((option) => {
 		option.addEventListener('click', () => {
 			currentLanguage = option.dataset.language;
 			localStorage.setItem('language', currentLanguage);
 			translatePage();
-			closeLanguageMenu(true);
+			closeLanguageMenu(!option.closest('.mobile-language-options'));
 		});
 		option.addEventListener('keydown', event => {
 			if (event.key === 'Escape') { event.preventDefault(); closeLanguageMenu(true); }
-			if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+			if (option.closest('#language-options') && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
 				event.preventDefault();
 				const step = event.key === 'ArrowDown' ? 1 : -1;
-				languageOptions[(index + step + languageOptions.length) % languageOptions.length].focus();
+				const index = desktopLanguageOptions.indexOf(option);
+				desktopLanguageOptions[(index + step + desktopLanguageOptions.length) % desktopLanguageOptions.length].focus();
 			}
 		});
 	});
 	document.addEventListener('pointerdown', event => {
 		if (!languageToggle?.contains(event.target) && !languageMenu?.contains(event.target)) closeLanguageMenu();
 	});
+
+	// --- Header and mobile navigation ---
+	const siteHeader = document.getElementById('site-header');
+	const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+	const mobileNavigation = document.getElementById('mobile-navigation');
+	const closeMobileMenu = () => {
+		if (mobileNavigation?.open) mobileNavigation.close();
+	};
+
+	mobileMenuToggle?.addEventListener('click', () => {
+		if (!mobileNavigation) return;
+		mobileNavigation.showModal();
+		document.body.classList.add('navigation-open');
+	});
+	mobileNavigation?.querySelectorAll('[data-close-mobile-menu]').forEach((button) => button.addEventListener('click', closeMobileMenu));
+	mobileNavigation?.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', closeMobileMenu));
+	mobileNavigation?.addEventListener('click', (event) => {
+		if (event.target === mobileNavigation) closeMobileMenu();
+	});
+	mobileNavigation?.addEventListener('close', () => {
+		document.body.classList.remove('navigation-open');
+		mobileMenuToggle?.focus({ preventScroll: true });
+	});
+
+	let lastScrollPosition = window.scrollY;
+	let headerFrame = 0;
+	window.addEventListener('scroll', () => {
+		if (headerFrame) return;
+		headerFrame = window.requestAnimationFrame(() => {
+			const currentScrollPosition = window.scrollY;
+			const movingDown = currentScrollPosition > lastScrollPosition + 8;
+			const movingUp = currentScrollPosition < lastScrollPosition - 8;
+			if (!mobileNavigation?.open && currentScrollPosition > 96 && movingDown) siteHeader?.classList.add('site-header--hidden');
+			if (movingUp || currentScrollPosition <= 96) siteHeader?.classList.remove('site-header--hidden');
+			lastScrollPosition = currentScrollPosition;
+			headerFrame = 0;
+		});
+	}, { passive: true });
+
+	// --- Lazy project previews and enlarged dialog ---
+	document.querySelectorAll('[data-project-preview]').forEach((preview) => {
+		const frame = preview.querySelector('iframe[data-src]');
+		preview.addEventListener('toggle', () => {
+			if (!frame) return;
+			if (preview.open) frame.src = frame.dataset.src;
+			else frame.removeAttribute('src');
+		});
+	});
+
+	const projectDialog = document.getElementById('project-dialog');
+	const projectDialogTitle = document.getElementById('project-dialog-title');
+	const projectDialogFrame = projectDialog?.querySelector('iframe');
+	const closeProjectDialog = () => {
+		if (projectDialog?.open) projectDialog.close();
+	};
+	document.querySelectorAll('[data-project-dialog]').forEach((button) => {
+		button.addEventListener('click', () => {
+			if (!projectDialog || !projectDialogFrame || !projectDialogTitle) return;
+			projectDialogTitle.textContent = button.dataset.projectName;
+			projectDialogFrame.src = button.dataset.projectUrl;
+			projectDialog.showModal();
+		});
+	});
+	projectDialog?.querySelector('[data-close-project-dialog]')?.addEventListener('click', closeProjectDialog);
+	projectDialog?.addEventListener('click', (event) => {
+		if (event.target === projectDialog) closeProjectDialog();
+	});
+	projectDialog?.addEventListener('close', () => projectDialogFrame?.removeAttribute('src'));
 
 	// --- Initial render ---
 	// Sets <html lang>, translates page, sets meta, and shows loader before greeting
@@ -278,6 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			readmeContainer.replaceChildren();
 			if (typeof rendered === 'string') readmeContainer.innerHTML = rendered;
 			else readmeContainer.append(rendered);
+			readmeContainer.querySelector('h2[data-i18n="my-stack"]')?.setAttribute('id', 'skills');
+			readmeContainer.querySelector('h2[data-i18n="process"]')?.setAttribute('id', 'learning');
 			const images = [...readmeContainer.querySelectorAll('img')];
 			images.forEach((image, index) => {
 				image.decoding = 'async';
