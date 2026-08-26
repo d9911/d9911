@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				'free-time-h3': 'Я провожу своё свободное время',
 				'nav-about': 'Обо мне', 'nav-skills': 'Навыки', 'nav-learning': 'В процессе', 'nav-projects': 'Мои проекты', 'nav-contacts': 'Контакты',
 				'menu-title': 'Навигация', 'theme-label': 'Сменить тему', 'projects-kicker': 'Независимые веб-инструменты', 'projects-title': 'Мои проекты',
+				'reading-progress-label': 'Прогресс чтения страницы',
 				'projects-intro': 'Небольшие приложения, которые решают одну задачу и работают прямо в браузере.',
 				'preview-toggle': 'Показать предпросмотр', 'open-large': 'Открыть крупнее', 'footer-text': 'Независимые веб-приложения и инструменты.',
 				'project-calculator': 'Калькулятор CSS calc() для адаптивного размера шрифта с графиком и сохранением значений.',
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				'free-time-h3': 'Paso mi tiempo libre en',
 				'nav-about': 'Sobre mí', 'nav-skills': 'Habilidades', 'nav-learning': 'En proceso', 'nav-projects': 'Mis proyectos', 'nav-contacts': 'Contactos',
 				'menu-title': 'Navegación', 'theme-label': 'Cambiar tema', 'projects-kicker': 'Herramientas web independientes', 'projects-title': 'Mis proyectos',
+				'reading-progress-label': 'Progreso de lectura de la página',
 				'projects-intro': 'Pequeñas aplicaciones que resuelven una tarea y funcionan directamente en el navegador.',
 				'preview-toggle': 'Mostrar vista previa', 'open-large': 'Abrir ampliado', 'footer-text': 'Aplicaciones y herramientas web independientes.',
 				'project-calculator': 'Calculadora CSS calc() para tipografía adaptable con gráfico y valores guardados.',
@@ -105,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				'free-time-h3': 'I spend my free time on',
 				'nav-about': 'About', 'nav-skills': 'Skills', 'nav-learning': 'In progress', 'nav-projects': 'My projects', 'nav-contacts': 'Contacts',
 				'menu-title': 'Navigation', 'theme-label': 'Switch theme', 'projects-kicker': 'Independent web tools', 'projects-title': 'My projects',
+				'reading-progress-label': 'Page reading progress',
 				'projects-intro': 'Small applications that solve one task and run directly in the browser.',
 				'preview-toggle': 'Show preview', 'open-large': 'Open larger', 'footer-text': 'Independent web applications and tools.',
 				'project-calculator': 'A CSS calc() calculator for responsive font sizing with a chart and saved values.',
@@ -154,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	let currentLanguage = detectLanguage();
+	let applyReadmeLocale = async () => {};
 
 	// --- setLangMeta ---
 	// Updates <html lang> and meta description/keywords for SEO and accessibility
@@ -233,9 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
 				}
 			}
 		});
+		document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
+			const key = el.getAttribute('data-i18n-aria-label');
+			const translation = languageMap[currentLanguage].translations[key];
+			if (translation) el.setAttribute('aria-label', translation);
+		});
 		updateMetaTags();
 		setLangMeta(currentLanguage);
 		updateLanguageMenu();
+		void applyReadmeLocale(currentLanguage);
 	};
 
 	const languageMenu = document.getElementById('language-options');
@@ -302,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// --- Header and mobile navigation ---
 	const siteHeader = document.getElementById('site-header');
+	const readingProgress = document.getElementById('reading-progress');
 	const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
 	const mobileNavigation = document.getElementById('mobile-navigation');
 	const closeMobileMenu = () => {
@@ -323,12 +334,23 @@ document.addEventListener('DOMContentLoaded', () => {
 		mobileMenuToggle?.focus({ preventScroll: true });
 	});
 
+	const updateReadingProgress = () => {
+		if (!readingProgress) return;
+		const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+		readingProgress.value = scrollableHeight > 0 ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100)) : 0;
+	};
+
 	let lastScrollPosition = window.scrollY;
 	let headerFrame = 0;
+	let scrollingTimer = 0;
 	window.addEventListener('scroll', () => {
+		document.documentElement.classList.add('is-scrolling');
+		window.clearTimeout(scrollingTimer);
+		scrollingTimer = window.setTimeout(() => document.documentElement.classList.remove('is-scrolling'), 520);
 		if (headerFrame) return;
 		headerFrame = window.requestAnimationFrame(() => {
 			const currentScrollPosition = window.scrollY;
+			updateReadingProgress();
 			const movingDown = currentScrollPosition > lastScrollPosition + 8;
 			const movingUp = currentScrollPosition < lastScrollPosition - 8;
 			if (!mobileNavigation?.open && currentScrollPosition > 96 && movingDown) siteHeader?.classList.add('site-header--hidden');
@@ -337,14 +359,73 @@ document.addEventListener('DOMContentLoaded', () => {
 			headerFrame = 0;
 		});
 	}, { passive: true });
+	window.addEventListener('resize', updateReadingProgress, { passive: true });
+	updateReadingProgress();
+
+	// --- Lightweight motion system ---
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const revealTargets = [...document.querySelectorAll('.projects-section__header, .project-card')];
+	if (!reduceMotion && 'IntersectionObserver' in window) {
+		document.documentElement.classList.add('motion-ready');
+		const revealObserver = new IntersectionObserver((entries, observer) => {
+			entries.forEach((entry) => {
+				if (!entry.isIntersecting) return;
+				entry.target.classList.add('is-visible');
+				const clearRevealState = () => entry.target.classList.remove('reveal-item', 'is-visible');
+				entry.target.addEventListener('transitionend', clearRevealState, { once: true });
+				window.setTimeout(clearRevealState, 900);
+				observer.unobserve(entry.target);
+			});
+		}, { threshold: 0.12, rootMargin: '0px 0px -36px' });
+		revealTargets.forEach((target, index) => {
+			target.classList.add('reveal-item');
+			target.style.setProperty('--reveal-order', String(index % 6));
+			revealObserver.observe(target);
+		});
+	}
+
+	const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+	if (!reduceMotion && hasFinePointer) {
+		document.querySelectorAll('.project-card').forEach((card) => {
+			let tiltFrame = 0;
+			card.addEventListener('pointermove', (event) => {
+				if (tiltFrame) window.cancelAnimationFrame(tiltFrame);
+				tiltFrame = window.requestAnimationFrame(() => {
+					const rect = card.getBoundingClientRect();
+					const x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+					const y = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+					card.style.setProperty('--pointer-x', `${x * 100}%`);
+					card.style.setProperty('--pointer-y', `${y * 100}%`);
+					card.style.setProperty('--card-rotate-x', `${(0.5 - y) * 4}deg`);
+					card.style.setProperty('--card-rotate-y', `${(x - 0.5) * 5}deg`);
+					tiltFrame = 0;
+				});
+			});
+			card.addEventListener('pointerleave', () => {
+				if (tiltFrame) window.cancelAnimationFrame(tiltFrame);
+				tiltFrame = 0;
+				card.style.removeProperty('--card-rotate-x');
+				card.style.removeProperty('--card-rotate-y');
+			});
+		});
+	}
 
 	// --- Lazy project previews and enlarged dialog ---
-	document.querySelectorAll('[data-project-preview]').forEach((preview) => {
+	const projectPreviews = [...document.querySelectorAll('[data-project-preview]')];
+	projectPreviews.forEach((preview) => {
 		const frame = preview.querySelector('iframe[data-src]');
 		preview.addEventListener('toggle', () => {
-			if (!frame) return;
-			if (preview.open) frame.src = frame.dataset.src;
-			else frame.removeAttribute('src');
+			const card = preview.closest('.project-card');
+			card?.classList.toggle('project-card--expanded', preview.open);
+			if (preview.open) {
+				projectPreviews.forEach((otherPreview) => {
+					if (otherPreview !== preview && otherPreview.open) otherPreview.open = false;
+				});
+				if (frame && !frame.src) frame.src = frame.dataset.src;
+			} else {
+				frame?.removeAttribute('src');
+			}
+			window.requestAnimationFrame(updateReadingProgress);
 		});
 	});
 
@@ -379,6 +460,63 @@ document.addEventListener('DOMContentLoaded', () => {
 	// --- README.md loading ---
 	// Loads and renders README.md into the #readme-container using marked.js
 	const readmeContainer = document.getElementById('readme-container');
+	const readmeHeadingKeys = new Map([
+		['Technology stack', 'my-stack'],
+		['Core frontend', 'core-frontend'],
+		['Frontend ecosystem and UI', 'frontend-ecosystem-ui'],
+		['Application libraries and visualization', 'application-libraries-visualization'],
+		['Backend and API', 'backend-api'],
+		['Databases and data', 'databases-data'],
+		['DevOps, infrastructure and observability', 'devops-infrastructure-observability'],
+		['Tooling and quality', 'tooling-quality'],
+		['Additional languages and platforms', 'additional-languages-platforms'],
+		['Architecture and engineering practices', 'architecture-engineering'],
+		['Collaboration', 'collaboration'],
+		['In the process', 'process'],
+		['I spend my free time on', 'free-time'],
+	]);
+	const readmeLocaleCache = new Map();
+	let readmeLocaleRequest = 0;
+
+	const annotateReadmeText = () => {
+		readmeContainer?.querySelector('h1 [data-i18n="hi"]')?.setAttribute('data-readme-i18n', 'hi');
+		readmeContainer?.querySelectorAll('h2, h3').forEach((heading) => {
+			const key = readmeHeadingKeys.get(heading.textContent.trim());
+			if (key) heading.dataset.readmeI18n = key;
+		});
+		readmeContainer?.querySelectorAll('[data-readme-i18n]').forEach((element) => {
+			if (!element.dataset.readmeOriginal) element.dataset.readmeOriginal = element.textContent.trim();
+		});
+	};
+
+	const getReadmeLocale = async (lang) => {
+		if (lang === 'en') return new Map();
+		if (readmeLocaleCache.has(lang)) return readmeLocaleCache.get(lang);
+
+		const response = await fetch(`./src/i18n/readme.${lang}.md`);
+		if (!response.ok) throw new Error(`Unable to load README locale: ${lang}`);
+		const markdown = await response.text();
+		const parsed = new DOMParser().parseFromString(markdown, 'text/html');
+		const translations = new Map(
+			[...parsed.querySelectorAll('[data-readme-i18n]')].map((element) => [element.dataset.readmeI18n, element.textContent.trim()]),
+		);
+		readmeLocaleCache.set(lang, translations);
+		return translations;
+	};
+
+	applyReadmeLocale = async (lang) => {
+		if (!readmeContainer) return;
+		const request = ++readmeLocaleRequest;
+		try {
+			const translations = await getReadmeLocale(lang);
+			if (request !== readmeLocaleRequest || lang !== currentLanguage) return;
+			readmeContainer.querySelectorAll('[data-readme-i18n]').forEach((element) => {
+				element.textContent = translations.get(element.dataset.readmeI18n) ?? element.dataset.readmeOriginal;
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
 	const renderMarkdown = (markdown) => {
 		if (window.marked?.parse) return window.marked.parse(markdown);
 
@@ -400,10 +538,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			else readmeContainer.append(rendered);
 			readmeContainer.querySelector('h2[data-i18n="my-stack"]')?.setAttribute('id', 'skills');
 			readmeContainer.querySelector('h2[data-i18n="process"]')?.setAttribute('id', 'learning');
+			annotateReadmeText();
 			const images = [...readmeContainer.querySelectorAll('img')];
 			images.forEach((image, index) => {
 				image.decoding = 'async';
 				if (index > 1) image.loading = 'lazy';
+				if (image.src.includes('img.shields.io')) image.classList.add('interactive-badge');
 				if (image.src.includes('github-readme-stats.vercel.app')) {
 					image.addEventListener('error', () => {
 						const fallback = document.createElement('span');
@@ -415,6 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 			readmeContainer.setAttribute('aria-busy', 'false');
 			translatePage(); // <-- translate new elements!
+			window.requestAnimationFrame(updateReadingProgress);
 		})
 		.catch((err) => {
 			console.error(err);
