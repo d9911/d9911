@@ -1,10 +1,9 @@
 {
 	"name": "d9911",
-	"main": "index.html",
 	"compatibility_date": "2025-06-01",
 	"workers_dev": true,
 	"assets": {
-		"binding": "ASSETS",
+		"directory": ".",
 		"not_found_handling": "404-page"
 	}
 }

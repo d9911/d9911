@@ -1,0 +1,13 @@
+.assetsignore
+.git
+.gitignore
+.playwright-cli
+.wrangler
+node_modules
+build
+dist
+Icon
+LICENSE
+wrangler.jsonc
+src/index.js
+src/sprite
