@@ -49,13 +49,7 @@
 		<meta name="HandheldFriendly" content="true" />
 		<meta name="MobileOptimized" content="320" />
 		<meta name="format-detection" content="telephone=no, email=no, address=no" />
-		<meta
-			http-equiv="Content-Security-Policy"
-			content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; font-src 'self'; frame-src https://*.d9911.org;"
-		/>
-		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
-		<meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
 		<link rel="canonical" href="https://d9911.org/" />
 		<!-- Open Graph -->
 		<meta property="og:title" content="Denis Gutsuliak — FullStack JavaScript Developer" />
@@ -138,7 +132,7 @@
 					<a href="#projects" data-i18n="nav-projects">Мои проекты</a>
 					<a href="#contacts" data-i18n="nav-contacts">Контакты</a>
 				</nav>
-				<div class="controls" aria-label="Настройки отображения">
+				<div class="controls" role="group" aria-label="Настройки отображения">
 					<button class="icon-button" type="button" data-theme-toggle aria-label="Переключить тему"></button>
 					<div class="language-menu">
 						<button id="language-toggle" class="language-trigger" type="button" aria-label="Выбрать язык" aria-haspopup="listbox" aria-expanded="false" aria-controls="language-options">
@@ -181,6 +175,7 @@
 		<main class="container" id="main-content" tabindex="-1" aria-label="Портфолио Дениса Гуцуляка">
 			<section id="about" class="profile-section" aria-label="Профиль Дениса Гуцуляка">
 				<div id="readme-container" aria-busy="true">
+					<h1>Denis Gutsuliak — FullStack JavaScript Developer</h1>
 					<p class="loading-status" role="status">Загрузка профиля…</p>
 				</div>
 			</section>
