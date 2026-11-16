@@ -1,5 +1,5 @@
 <div class="welcome" align="center">
-  <p><a href="https://d9911.org/"><strong>d9911.org</strong></a></p>
+  <!-- <p><a href="https://d9911.org/"><strong>d9911.org</strong></a></p> -->
   <a href="https://t.me/d9911">
     <h1>
       <span data-i18n="hi">Hi, I'm Denis and I'm a FullStack JavaScript Developer</span>
